@@ -5,7 +5,6 @@
   vars:
     pkg_name: httpd
     username: vanessa
-
   tasks:
     - name: creating user
       user:
@@ -18,11 +17,20 @@
         path: /tmp/ansible.txt
         state: touch
         mode: '0600'
+      register: output
+    - name: read the output
+      debug:
+       msg: "hello from ansible this is running on {{ ansible_os_family }}"  
     - name: create directory
       file:
         path: /tmp/dir
         state: touch
         mode: '0777'
+      tags:
+        - app1
+        - c1
+    - name: create a file
+      shell: cat/etc/passwd | grep serge  
     - name: install apache
       yum:
         name: "{{ pkg_name }}"
